@@ -16,6 +16,10 @@ import LSystem from './l-systems/lsystem';
 // Define an object with application parameters and button callbacks
 // This will be referred to by dat.GUI's functions that add GUI elements.
 const controls = {
+  'Load Scene': loadScene, // A function pointer, essentially
+  'Elevation View': true,
+  'Population View': false,
+  'Overlay': false,
 };
 
 let square: Square;
@@ -182,6 +186,10 @@ function main() {
 
   // Add controls to the gui
   const gui = new DAT.GUI();
+  gui.add(controls, 'Load Scene');
+  gui.add(controls, 'Elevation View');
+  gui.add(controls, 'Population View');
+  gui.add(controls, 'Overlay');
 
   // get canvas and webgl context
   const canvas = <HTMLCanvasElement> document.getElementById('canvas');
@@ -222,14 +230,15 @@ function main() {
     flat.setTime(time++);
     gl.viewport(0, 0, window.innerWidth, window.innerHeight);
     renderer.clear();
-    renderer.render(camera, flat, [screenQuad]);
-    //renderer.render(camera, flat, [square]);
+    renderer.render(camera, flat, [screenQuad], 
+      controls["Elevation View"],
+      controls["Population View"], controls["Overlay"]);
     renderer.render(camera, instancedShader, [
       mesh_stem
-    ]);
+    ], false, false, false);
     renderer.render(camera, instancedShader, [
       mesh_bud
-    ]);
+    ], false, false, false);
     stats.end();
 
     // Tell the browser to call `tick` again whenever it renders a new frame

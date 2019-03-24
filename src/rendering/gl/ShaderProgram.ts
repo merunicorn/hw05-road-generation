@@ -40,6 +40,9 @@ class ShaderProgram {
   unifEye: WebGLUniformLocation;
   unifUp: WebGLUniformLocation;
   unifDimensions: WebGLUniformLocation;
+  unifLand: WebGLUniformLocation;
+  unifPop: WebGLUniformLocation;
+  unifOver: WebGLUniformLocation;
 
   constructor(shaders: Array<Shader>) {
     this.prog = gl.createProgram();
@@ -70,6 +73,9 @@ class ShaderProgram {
     this.unifEye   = gl.getUniformLocation(this.prog, "u_Eye");
     this.unifRef   = gl.getUniformLocation(this.prog, "u_Ref");
     this.unifUp   = gl.getUniformLocation(this.prog, "u_Up");
+    this.unifLand = gl.getUniformLocation(this.prog, "u_Land");
+    this.unifPop = gl.getUniformLocation(this.prog, "u_Pop");
+    this.unifOver = gl.getUniformLocation(this.prog, "u_Overlay");
   }
 
   use() {
@@ -131,6 +137,42 @@ class ShaderProgram {
     this.use();
     if (this.unifTime !== -1) {
       gl.uniform1f(this.unifTime, t);
+    }
+  }
+
+  setLand(landView: boolean) {
+    this.use();
+    if(this.unifLand !== -1) {
+      if (landView) {
+        gl.uniform1f(this.unifLand, 1);
+      }
+      else {
+        gl.uniform1f(this.unifLand, 0);
+      }   
+    }
+  }
+
+  setPop(popView: boolean) {
+    this.use();
+    if(this.unifPop !== -1) {
+      if (popView) {
+        gl.uniform1f(this.unifPop, 1);
+      }
+      else {
+        gl.uniform1f(this.unifPop, 0);
+      }   
+    }
+  }
+
+  setOver(overView: boolean) {
+    this.use();
+    if(this.unifOver !== -1) {
+      if (overView) {
+        gl.uniform1f(this.unifOver, 1);
+      }
+      else {
+        gl.uniform1f(this.unifOver, 0);
+      }   
     }
   }
 
