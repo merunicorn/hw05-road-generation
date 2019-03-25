@@ -28,7 +28,6 @@ class ShaderProgram {
   attrTransform1: number; // Mesh transformation data
   attrTransform2: number; // Mesh transformation data
   attrTransform3: number; // Mesh transformation data
-  attrTransform4: number; // Mesh transformation data
   attrUV: number;
 
   unifModel: WebGLUniformLocation;
@@ -62,7 +61,6 @@ class ShaderProgram {
     this.attrTransform1 = gl.getAttribLocation(this.prog, "vs_Transf1");
     this.attrTransform2 = gl.getAttribLocation(this.prog, "vs_Transf2");
     this.attrTransform3 = gl.getAttribLocation(this.prog, "vs_Transf3");
-    this.attrTransform4 = gl.getAttribLocation(this.prog, "vs_Transf4");
     this.attrUV = gl.getAttribLocation(this.prog, "vs_UV");
     this.unifModel      = gl.getUniformLocation(this.prog, "u_Model");
     this.unifModelInvTr = gl.getUniformLocation(this.prog, "u_ModelInvTr");
@@ -213,31 +211,24 @@ class ShaderProgram {
     // Takes in transformation data
     if (this.attrTransform1 != -1 && d.bindTransform1()) {
       gl.enableVertexAttribArray(this.attrTransform1);
-      // Passes in vec4s
-      gl.vertexAttribPointer(this.attrTransform1, 4, gl.FLOAT, false, 0, 0);
+      // Passes in vec3s
+      gl.vertexAttribPointer(this.attrTransform1, 3, gl.FLOAT, false, 0, 0);
       // Advances 1 index in transform VBO for each drawn instance
       gl.vertexAttribDivisor(this.attrTransform1, 1);
     }
     if (this.attrTransform2 != -1 && d.bindTransform2()) {
       gl.enableVertexAttribArray(this.attrTransform2);
-      // Passes in vec4s
-      gl.vertexAttribPointer(this.attrTransform2, 4, gl.FLOAT, false, 0, 0);
+      // Passes in vec3s
+      gl.vertexAttribPointer(this.attrTransform2, 3, gl.FLOAT, false, 0, 0);
       // Advances 1 index in transform VBO for each drawn instance
       gl.vertexAttribDivisor(this.attrTransform2, 1);
     }
     if (this.attrTransform3 != -1 && d.bindTransform3()) {
       gl.enableVertexAttribArray(this.attrTransform3);
-      // Passes in vec4s
-      gl.vertexAttribPointer(this.attrTransform3, 4, gl.FLOAT, false, 0, 0);
+      // Passes in vec3s
+      gl.vertexAttribPointer(this.attrTransform3, 3, gl.FLOAT, false, 0, 0);
       // Advances 1 index in transform VBO for each drawn instance
       gl.vertexAttribDivisor(this.attrTransform3, 1);
-    }
-    if (this.attrTransform4 != -1 && d.bindTransform4()) {
-      gl.enableVertexAttribArray(this.attrTransform4);
-      // Passes in vec4s
-      gl.vertexAttribPointer(this.attrTransform4, 4, gl.FLOAT, false, 0, 0);
-      // Advances 1 index in transform VBO for each drawn instance
-      gl.vertexAttribDivisor(this.attrTransform4, 1);
     }
 
 
@@ -264,7 +255,6 @@ class ShaderProgram {
     if (this.attrTransform1 != -1) gl.disableVertexAttribArray(this.attrTransform1);
     if (this.attrTransform2 != -1) gl.disableVertexAttribArray(this.attrTransform2);
     if (this.attrTransform3 != -1) gl.disableVertexAttribArray(this.attrTransform3);
-    if (this.attrTransform4 != -1) gl.disableVertexAttribArray(this.attrTransform4);
     if (this.attrUV != -1) gl.disableVertexAttribArray(this.attrUV);
   }
 };

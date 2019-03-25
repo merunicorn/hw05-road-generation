@@ -1,4 +1,5 @@
 import { vec2, mat3 } from 'gl-matrix';
+import NoiseFxns from './noisefxns';
 
 class DrawingRule { 
   input: string;
@@ -31,7 +32,7 @@ class DrawingRule {
     this.translation = 0;
     this.rotation = 0;
     this.scale = vec2.fromValues(1.0, 1.0);
-      this.mat = mat3.fromValues(1,0,0,0,1,0,0,0,1);
+    this.mat = mat3.fromValues(1,0,0,0,1,0,0,0,1);
   }
 
   getDrawOp(rand0: number, rand1: number) {
@@ -43,32 +44,39 @@ class DrawingRule {
       // drawing grid streets
       this.drawGrid();
     }
+    else if (this.input == "B") {
+      // branch
+      this.drawBranch();
+    }
     else {
       console.log("invalid char");
     }
   }
 
   drawForward() {
-    this.translation = 4; //move forward 4
+    this.translation = 4; // move forward 4
   }
 
   drawGrid() {
-    this.rotation = 90; //turn 90 degrees
+    this.rotation = 90; // turn 90 degrees
     this.drawForward();
   }
 
-  /*drawOp2(rand0: number, rand1: number) {
-    // draws something
-    var random0 = Math.random();
-    var random1 = Math.random();
-    random0 *= 10.0;
-    random1 *= 10.0;
-    this.rotation -= this.angle_num;
-  }*/
+  drawBranch() {
+    this.pickDirection();
+    this.drawForward();
+  }
 
   scaleOp() {
     // if needs to scale down, edit this.scale here
     this.scale[1] *= 4.0;
+  }
+
+  pickDirection() {
+    // based on noisefxns / population density
+    // determine a direction
+    // placeholder:
+    this.rotation = 30;
   }
 };
 

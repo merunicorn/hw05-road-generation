@@ -12,7 +12,6 @@ class Mesh extends Drawable {
   transf1: Float32Array;
   transf2: Float32Array;
   transf3: Float32Array;
-  transf4: Float32Array;
   offsets: Float32Array;
   center: vec4;
 
@@ -67,7 +66,6 @@ class Mesh extends Drawable {
     this.generateTransform1();
     this.generateTransform2();
     this.generateTransform3();
-    this.generateTransform4();
 
     this.count = this.indices.length;
 
@@ -92,7 +90,7 @@ class Mesh extends Drawable {
 
   setVBOTransform(colors: Float32Array,
     transf1: Float32Array, transf2: Float32Array,
-    transf3: Float32Array, transf4: Float32Array) {
+    transf3: Float32Array) {
     
     this.colors = colors;
   
@@ -102,11 +100,9 @@ class Mesh extends Drawable {
     this.transf1 = transf1;
     this.transf2 = transf2;
     this.transf3 = transf3;
-    this.transf4 = transf4;
     console.log(transf1);
     console.log(transf2);
     console.log(transf3);
-    console.log(transf4);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.bufTransform1);
     gl.bufferData(gl.ARRAY_BUFFER, this.transf1, gl.STATIC_DRAW);
@@ -114,8 +110,6 @@ class Mesh extends Drawable {
     gl.bufferData(gl.ARRAY_BUFFER, this.transf2, gl.STATIC_DRAW);
     gl.bindBuffer(gl.ARRAY_BUFFER, this.bufTransform3);
     gl.bufferData(gl.ARRAY_BUFFER, this.transf3, gl.STATIC_DRAW);
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.bufTransform4);
-    gl.bufferData(gl.ARRAY_BUFFER, this.transf4, gl.STATIC_DRAW);
   }
 };
 

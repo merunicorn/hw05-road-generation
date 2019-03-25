@@ -1,4 +1,4 @@
-import {vec2, vec3, vec4, quat, mat4} from 'gl-matrix';
+import {vec2, vec3, vec4, quat, mat3, mat4} from 'gl-matrix';
 import Turtle from './turtle';
 import ExpansionRule from './expansionrule';
 import DrawingRule from './drawingrule';
@@ -10,23 +10,22 @@ class LSystem {
   alphabet: Array<string>;
   axiom: string;
   newaxiom: string;
-  public mat: mat4;
-  public matb: mat4;
-  public transfvecs: Array<vec4>;
-  public btransfvecs: Array<vec4>;
+  public mat: mat3;
+  public matb: mat3;
+  public transfvecs: Array<vec3>;
+  public btransfvecs: Array<vec3>;
   public colors: Array<vec4>;
   public bcolors: Array<vec4>;
   iters: number;
 
   constructor(input: string, alphabet: Array<string>, iters: number) {
-    
     this.axiom = input;
     this.alphabet = alphabet;
     this.expmap = new Map();
     this.drawmap = new Map();
     this.turtlestack = new Array();
-    this.mat = mat4.create();
-    this.matb = mat4.create();
+    this.mat = mat3.create();
+    this.matb = mat3.create();
     this.transfvecs = new Array();
     this.btransfvecs = new Array();
     this.colors = new Array();
@@ -111,41 +110,27 @@ class LSystem {
               currentTurt.updateOrientation(draw.rotation);
               currentTurt.setDepth(recurDepth);
 
-              let posSize = vec3.create();
-              for (let l = 0; l < 3; l++) {
+              let posSize = vec2.create();
+              for (let l = 0; l < 2; l++) {
                   posSize[l] = currentTurt.position[l] - previousPos[l];
               }
-              let scaleAmt = vec3.length(posSize);
-              let scaleTurt = vec3.create();
-              let scaleBud = vec3.create();
+              let scaleAmt = vec2.length(posSize);
+              let scaleTurt = vec2.create();
+              let scaleBud = vec2.create();
               var randBud = Math.random();
-              for (let m = 0; m < 3; m++) {
+              for (let m = 0; m < 2; m++) {
                   scaleTurt[m] = (draw.scale[m] * 1.8);
                   scaleBud[m] = scaleAmt / (draw.scale_num * 3.0);
               }
 
-              //this.setUpTransfMat(currentTurt.orientation, previousPos, scaleTurt);
-              //this.setUpBTransfMat(currentTurt.orientation, previousPos, scaleBud);
+              this.setUpTransfMat(currentTurt.orientation, previousPos, scaleTurt);
+              this.setUpBTransfMat(currentTurt.orientation, previousPos, scaleBud);
 
               // set up the transformation vec4s
-              for (var i = 0; i < 4; i++) {
-                this.transfvecs.push(vec4.fromValues(this.mat[i+0],
-                                                     this.mat[i+4],
-                                                     this.mat[i+8],
-                                                     this.mat[i+12]));
-              }
-
-              if (randBud < 0.3 && recurDepth >= 3) {
-                  for (var j = 0; j < 4; j++) {
-                      this.btransfvecs.push(vec4.fromValues(this.matb[j+0],
-                                                            this.matb[j+4],
-                                                            this.matb[j+8],
-                                                            this.matb[j+12]));
-                  }
-                  this.bcolors.push(vec4.fromValues(1.0,
-                    (52.0/255.0),
-                    (85.0/255.0),
-                    1.0));
+              for (var i = 0; i < 3; i++) {
+                this.transfvecs.push(vec3.fromValues(this.mat[i+0],
+                                                     this.mat[i+3],
+                                                     this.mat[i+6]));
               }  
 
               this.colors.push(vec4.fromValues((157.0/255.0),
@@ -183,26 +168,28 @@ class LSystem {
       return this.turtlestack.pop();
   }
 
-  setUpTransfMat(rot: quat, trans: vec3, scale: vec3) {
-    let t = mat4.create();
-    mat4.fromTranslation(t, trans);
-    let r = mat4.create();
-    mat4.fromQuat(r, rot);
-    let s = mat4.create();
-    mat4.fromScaling(s, scale);
-    mat4.multiply(this.mat,t,r);
-    mat4.multiply(this.mat,this.mat,s);
+  setUpTransfMat(rot: vec2, trans: vec2, scale: vec2) {
+    let t = mat3.create();
+    mat3.fromTranslation(t, trans);
+    let r = mat3.create();
+    let rad = vec2.angle(rot, vec2.fromValues(0.0, 0.0)); //radian from rot
+    mat3.fromRotation(r, rad);
+    let s = mat3.create();
+    mat3.fromScaling(s, scale);
+    mat3.multiply(this.mat,t,r);
+    mat3.multiply(this.mat,this.mat,s);
   }
 
-  setUpBTransfMat(rot: quat, trans: vec3, scale: vec3) {
-    let t = mat4.create();
-    mat4.fromTranslation(t, trans);
-    let r = mat4.create();
-    mat4.fromQuat(r, rot);
-    let s = mat4.create();
-    mat4.fromScaling(s, scale);
-    mat4.multiply(this.matb,t,r);
-    mat4.multiply(this.matb,this.matb,s);
+  setUpBTransfMat(rot: vec2, trans: vec2, scale: vec2) {
+    let t = mat3.create();
+    mat3.fromTranslation(t, trans);
+    let r = mat3.create();
+    let rad = vec2.angle(rot, vec2.fromValues(0.0, 0.0)); //radian from rot
+    mat3.fromRotation(r, rad);
+    let s = mat3.create();
+    mat3.fromScaling(s, scale);
+    mat3.multiply(this.mat,t,r);
+    mat3.multiply(this.mat,this.mat,s);
   }
 };
 

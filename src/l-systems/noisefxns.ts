@@ -97,7 +97,7 @@ WorleyNoise(uv: vec2) {
             // Store the min dist thus far
             let diff = vec2.fromValues(neighbor[0] + point[0] - uvFract[0], 
                                        neighbor[1] + point[1] - uvFract[1]);
-            let dist = Math.sqrt(diff[0] * diff[0] + diff[1] * diff[1]);
+            let dist = vec2.length(diff);
             minDist = Math.min(minDist, dist);
         }
     }

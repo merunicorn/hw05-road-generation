@@ -10,7 +10,7 @@ abstract class Drawable {
   bufTransform1: WebGLBuffer;
   bufTransform2: WebGLBuffer;
   bufTransform3: WebGLBuffer;
-  bufTransform4: WebGLBuffer;
+  //bufTransform4: WebGLBuffer;
   bufCol: WebGLBuffer;
   bufUV: WebGLBuffer;
 
@@ -22,7 +22,7 @@ abstract class Drawable {
   t1Generated: boolean = false;
   t2Generated: boolean = false;
   t3Generated: boolean = false;
-  t4Generated: boolean = false;
+  //t4Generated: boolean = false;
   uvGenerated: boolean = false;
 
   numInstances: number = 0; // How many instances of this Drawable the shader program should draw
@@ -38,7 +38,7 @@ abstract class Drawable {
     gl.deleteBuffer(this.bufTransform1);
     gl.deleteBuffer(this.bufTransform2);
     gl.deleteBuffer(this.bufTransform3);
-    gl.deleteBuffer(this.bufTransform4);
+    //gl.deleteBuffer(this.bufTransform4);
     gl.deleteBuffer(this.bufUV);
   }
 
@@ -82,10 +82,10 @@ abstract class Drawable {
     this.bufTransform3 = gl.createBuffer();
   }
 
-  generateTransform4() {
+  /*generateTransform4() {
     this.t4Generated = true;
     this.bufTransform4 = gl.createBuffer();
-  }
+  }*/
 
   generateUV() {
     this.uvGenerated = true;
@@ -148,12 +148,12 @@ abstract class Drawable {
     return this.t3Generated;
   }
 
-  bindTransform4(): boolean {
+  /*bindTransform4(): boolean {
     if (this.t4Generated) {
       gl.bindBuffer(gl.ARRAY_BUFFER, this.bufTransform4);
     }
     return this.t4Generated;
-  }
+  }*/
 
   bindUV(): boolean {
     if (this.uvGenerated) {
