@@ -55,25 +55,21 @@ class Square extends Drawable {
     gl.bufferData(gl.ARRAY_BUFFER, this.offsets, gl.STATIC_DRAW);
   }
 
-  setInstanceVBOs(offsets: Float32Array, colors: Float32Array,
+  setInstanceVBOs(colors: Float32Array,
                   transf1: Float32Array, transf2: Float32Array,
                   transf3: Float32Array, transf4: Float32Array) {
     this.colors = colors;
-    this.offsets = offsets;
+    //this.offsets = offsets;
 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.bufCol);
     gl.bufferData(gl.ARRAY_BUFFER, this.colors, gl.STATIC_DRAW);
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.bufTranslate);
-    gl.bufferData(gl.ARRAY_BUFFER, this.offsets, gl.STATIC_DRAW);
+    //gl.bindBuffer(gl.ARRAY_BUFFER, this.bufTranslate);
+    //gl.bufferData(gl.ARRAY_BUFFER, this.offsets, gl.STATIC_DRAW);
 
     this.transf1 = transf1;
     this.transf2 = transf2;
     this.transf3 = transf3;
     this.transf4 = transf4;
-    /*console.log(this.transf1);
-    console.log(this.transf2);
-    console.log(this.transf3);
-    console.log(this.transf4);*/
 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.bufTransform1);
     gl.bufferData(gl.ARRAY_BUFFER, this.transf1, gl.STATIC_DRAW);
@@ -84,27 +80,6 @@ class Square extends Drawable {
     gl.bindBuffer(gl.ARRAY_BUFFER, this.bufTransform4);
     gl.bufferData(gl.ARRAY_BUFFER, this.transf4, gl.STATIC_DRAW);
   }
-
-  /*setVBOTransform(transf1: Float32Array, transf2: Float32Array,
-                  transf3: Float32Array, transf4: Float32Array) {
-    this.transf1 = transf1;
-    this.transf2 = transf2;
-    this.transf3 = transf3;
-    this.transf4 = transf4;
-    console.log(this.transf1);
-    console.log(this.transf2);
-    console.log(this.transf3);
-    console.log(this.transf4);
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.bufTransform1);
-    gl.bufferData(gl.ARRAY_BUFFER, this.transf1, gl.STATIC_DRAW);
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.bufTransform2);
-    gl.bufferData(gl.ARRAY_BUFFER, this.transf2, gl.STATIC_DRAW);
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.bufTransform3);
-    gl.bufferData(gl.ARRAY_BUFFER, this.transf3, gl.STATIC_DRAW);
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.bufTransform4);
-    gl.bufferData(gl.ARRAY_BUFFER, this.transf4, gl.STATIC_DRAW);
-  }*/
 };
 
 export default Square;

@@ -73,12 +73,8 @@ function loadScene() {
   let btransf2Array = [];
   let btransf3Array = [];
   let btransf4Array = [];
-  //let n: number = 100.0;
   let k: number = (lsys.transfvecs.length);
-  console.log(k);
   k = k / 4.0;
-  console.log(k);
-  //let n: number = 2.0;
   for (let kcount = 0; kcount < k; kcount++) {
       transf1Array.push(lsys.transfvecs[0+ 4*kcount][0]);
       transf1Array.push(lsys.transfvecs[1+ 4*kcount][0]);
@@ -103,8 +99,6 @@ function loadScene() {
       colorsArray.push(lsys.colors[kcount][3]);
   }
   let bcount = lsys.btransfvecs.length / 4.0;
-  console.log("b");
-  console.log(bcount);
   for (let b = 0; b < bcount; b++) {
       btransf1Array.push(lsys.btransfvecs[0+ 4*b][0]);
       btransf1Array.push(lsys.btransfvecs[1+ 4*b][0]);
@@ -129,7 +123,6 @@ function loadScene() {
       bcolorsArray.push(lsys.bcolors[b][3]);
   }
   
-  console.log("b arrays");
   console.log(btransf1Array);
   console.log(btransf2Array);
   console.log(btransf3Array);
@@ -148,11 +141,14 @@ function loadScene() {
   let btransf3: Float32Array = new Float32Array(btransf3Array);
   let btransf4: Float32Array = new Float32Array(btransf4Array);
 
-  mesh_stem.setNumInstances(k);
-  mesh_stem.setVBOTransform(colors, transf1, transf2, transf3, transf4);
+  //mesh_stem.setNumInstances(k);
+  //mesh_stem.setVBOTransform(colors, transf1, transf2, transf3, transf4);
 
-  mesh_bud.setNumInstances(bcount);
-  mesh_bud.setVBOTransform(bcolors, btransf1, btransf2, btransf3, btransf4);
+  //mesh_bud.setNumInstances(bcount);
+  //mesh_bud.setVBOTransform(bcolors, btransf1, btransf2, btransf3, btransf4);
+
+  square.setNumInstances(k);
+  square.setInstanceVBOs(colors, transf1, transf2, transf3, transf4);
 
   let offsetsArray = [];
   let ccolorsArray = [];
@@ -233,12 +229,14 @@ function main() {
     renderer.render(camera, flat, [screenQuad], 
       controls["Elevation View"],
       controls["Population View"], controls["Overlay"]);
+    renderer.render(camera, instancedShader, [square], false, false, false);
+    /*
     renderer.render(camera, instancedShader, [
       mesh_stem
     ], false, false, false);
     renderer.render(camera, instancedShader, [
       mesh_bud
-    ], false, false, false);
+    ], false, false, false);*/
     stats.end();
 
     // Tell the browser to call `tick` again whenever it renders a new frame

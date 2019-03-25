@@ -1,48 +1,37 @@
-import {vec3, mat4, quat, vec4} from 'gl-matrix';
+import {vec2} from 'gl-matrix';
 
 class Turtle {
-  position: vec3 = vec3.create();
-  public orientation: quat = quat.create();
+  public position: vec2 = vec2.create();
+  public orientation: vec2 = vec2.create();
   recurDepth: number = 0;
-  penColor: vec3 = vec3.create();
 
-  constructor(position: vec3, orientation: quat, 
-              recurDepth: number, penColor: vec3) {
+  constructor(position: vec2, orientation: vec2, 
+              recurDepth: number) {
     this.position = position;
-    this.orientation = quat.create();
+    this.orientation = orientation;
     this.recurDepth = recurDepth;
-    this.penColor = penColor;
     this.addTranslation = this.addTranslation.bind(this);
     this.updateOrientation = this.updateOrientation.bind(this);
     this.setDepth = this.setDepth.bind(this);
-    this.setColor = this.setColor.bind(this);
   }
 
   addTranslation(translate: number) {
-    let orient = vec4.create();
-    let t = mat4.create();
-    mat4.fromQuat(t, this.orientation);
-    // update based on up vector and new orientation matrix
-    vec4.transformMat4(orient, vec4.fromValues(0.0,1.0,0.0,1.0), t);
-    let trans = vec3.create();
-    trans = vec3.fromValues(orient[0] * translate,
-              orient[1] * translate,
-              orient[2] * translate);
-    vec3.add(this.position, this.position, trans);
+    let trans = vec2.fromValues(this.orientation[0] * translate,
+                            this.orientation[1] * translate);
+    vec2.add(this.position, this.position, trans);
   }
 
-  updateOrientation(rot: vec3) {
-    let q = quat.create();
-    quat.fromEuler(q, rot[0], rot[1], rot[2]);
-    quat.multiply(this.orientation, this.orientation, q);
+  updateOrientation(rot: number) {
+    // convert to radians
+    rot *= 180.0 / Math.PI;
+    // get direction vector
+    let orient = vec2.fromValues(Math.cos(rot), Math.sin(rot));
+    vec2.add(this.orientation, this.orientation, orient);
+    vec2.normalize(this.orientation, this.orientation);
   }
 
   setDepth(depth: number) {
     this.recurDepth = depth;
-  }
-
-  setColor(color: vec3) {
-    this.penColor = color;
   }
 };
 

@@ -81,7 +81,6 @@ float WorleyNoise(vec2 uv) {
     return minDist;
 }
 
-
 vec3 colorFxn(vec3 col) {
   return vec3(col / 255.0);
 }
@@ -92,7 +91,7 @@ void main() {
   vec3 waterCol = colorFxn(vec3(143.0, 178.0, 216.0));
 
   vec3 densePop = vec3(1.0);
-  vec3 sparsePop = vec3(0.0);
+  vec3 sparsePop = vec3(0.5);
 
   vec2 st = (fs_Pos.xy + 1.0) / 2.0;
   float fbmn = fbm(st).x;
@@ -166,8 +165,6 @@ void main() {
   }
 
   if(u_Overlay == 1.0) {
-    out_Col = vec4(mix(vec3(elevCol), vec3(popCol), 0.2), 1.0);
+    out_Col = vec4(mix(vec3(elevCol), vec3(popCol), 0.4), 1.0);
   }
-
-  //out_Col = vec4(vec3(0.0 + worley2), 1.0);
 }

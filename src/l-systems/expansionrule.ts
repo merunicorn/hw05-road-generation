@@ -1,3 +1,4 @@
+import NoiseFxns from './noisefxns';
 
 class ExpansionRule {
   input: string;
@@ -5,15 +6,11 @@ class ExpansionRule {
 
   constructor(input: string) {
     this.input = input;
-    if (input == "F") {
-        this.expansion = "FF";
+    if (input == "H") {
+        // highway road type
     }
-    else if (input == "X") {
-        //this.expansion = "F[+X][-X][++FX][-F]FX"
-        this.expansion = "FF[+LX][-LX]FFLX"
-    }
-    else if (input == "L") {
-        this.expansion = "F[X][X]L";
+    else if (input == "G") {
+        // grid road type
     }
     else {
         this.expansion = input;
